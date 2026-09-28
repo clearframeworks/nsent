@@ -13,6 +13,10 @@ python -m http.server 8080
 
 Then open <http://localhost:8080>. No package installation, build step, account, API key, or backend is required.
 
+## Hosted access
+
+The source is public and can run locally. The Retehost-hosted edition uses a separate sign-in gate for founder-approved accounts; that hosting configuration is maintained in the private Retehost repository. Public source access does not grant access to the hosted workspace.
+
 ## Privacy
 
 This edition processes form entries locally in your browser. It includes no analytics, external requests, or saved analysis storage. Reloading the page does not restore a saved analysis.
