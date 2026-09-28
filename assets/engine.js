@@ -1,0 +1,8 @@
+(function(g){'use strict';
+const STOP=new Set('the a an and or but if then than of to in on at for from by with as is are was were be been being it its this that these those they them their who what when where why how can could would should may might do does did have has had into out over under after before while about actually something someone company group system person outcome change changed'.split(' '));
+const W={evidence:.28,context:.16,incentives:.13,capability:.13,constraints:.10,timing:.10,distribution:.10};
+function tok(s){return new Set(String(s||'').toLowerCase().replace(/[^a-z0-9\s-]/g,' ').split(/\s+/).filter(x=>x.length>2&&!STOP.has(x)))}
+function sim(a,b){const A=tok(a),B=tok(b);if(!A.size||!B.size)return 0;let n=0;A.forEach(x=>{if(B.has(x))n++});return n/Math.sqrt(A.size*B.size)}
+function one(h,d){const ev=d.evidence.length?d.evidence.reduce((s,e)=>s+sim(h+' '+d.all,e),0)/d.evidence.length:0;const x={evidence:ev,context:sim(h,d.situation+' '+d.behavior),incentives:sim(h,d.incentives),capability:sim(h,d.capability),constraints:sim(h,d.constraints),timing:sim(h,d.timing),distribution:sim(h,d.distribution)};let raw=.02;Object.keys(W).forEach(k=>raw+=x[k]*W[k]);return {name:h,dimensions:x,raw}}
+function analyze(input){const d={...input,all:[input.situation,input.behavior,input.timing,input.incentives,input.constraints,input.capability,input.distribution].join(' ')};const rows=input.hypotheses.map(h=>one(h,d));const sum=rows.reduce((s,x)=>s+x.raw,0)||1;rows.forEach(x=>x.support=x.raw/sum*100);rows.sort((a,b)=>b.support-a.support);return {rows,weights:W}}
+g.NsentEngine={analyze,weights:W};})(window);
